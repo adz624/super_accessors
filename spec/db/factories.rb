@@ -4,34 +4,22 @@ FactoryGirl.define do
     name "Eddie"
     zipcode "12345"
     mobile "+886 5666533"
-    available "True"
+    available "false"
 
-    admin "False"
+    admin "FALSE"
     manager "0"
-    teacher "1"
+    teacher "no"
     worker "True"
+    factory :admin do
+      name "Vicky"
+      zipcode "293857"
+      mobile nil
+      available "NO"
 
-  end
-  factory :user2 do
-    name "Eddie"
-    zipcode 12345
-    mobile "+886 5666533"
-    available "F"
-
-    admin "T"
-    manager "X"
-    teacher "0"
-    worker "1"
-  end
-  factory :user3 do
-    name "Eddie"
-    zipcode 12345
-    mobile "+886 5666533"
-    available "F"
-
-    admin ""
-    manager ""
-    teacher "False"
-    worker "True"
+      admin "T"
+      manager "0"
+      teacher "yes"
+      worker "0"
+    end
   end
 end
