@@ -17,7 +17,7 @@ module SuperAccessors
       # for boolean convert
       def any_to_b(any)
         str = any.to_s
-        return false if str.blank? || str =~ (/(false|f|no|n|0)$/i)
+        return false if str.blank? || str =~ (/(false|no|0)$/i)
         return true
       end
     end
