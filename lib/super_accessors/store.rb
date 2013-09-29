@@ -1,28 +1,20 @@
 module SuperAccessors
   module Store
-    def self.extended(base)
-      base.class_eval do
-        include Converter
-      end
+    # converter
+    def any_to_i(any)
+      any.to_i
     end
-    module Converter
-      # for integer converter
-      def any_to_i(any)
-        any.to_i
-      end
-      # for string converter
-      def any_to_s(any)
-        any.to_s
-      end
-      # for boolean convert
-      def any_to_b(any)
-        str = any.to_s
-        return false if str.blank? || str =~ (/(false|no|0)$/i)
-        return true
-      end
+    # for string converter
+    def any_to_s(any)
+      any.to_s
+    end
+    # for boolean convert
+    def any_to_b(any)
+      str = any.to_s
+      return false if str.blank? || str =~ (/(false|no|0)$/i)
+      return true
     end
 
-    private
     # This function will instead of store function, now support string, boolean, integer
     #
     # Example 1:
@@ -42,7 +34,7 @@ module SuperAccessors
       store store_name, option
       # define the virtual attrs
       column_with_datatype.each do |attr, type|
-        self.send("store_key_type_#{type.to_s}", store_name, attr)
+        send("store_key_type_#{type.to_s}", store_name, attr)
       end
       # setting the checkboxs
       if option[:checkboxes]
@@ -55,7 +47,7 @@ module SuperAccessors
       define_method("#{store_name}_keys") do
         list = [];
         attrs.each do |attr|
-          if self.send(attr) == true
+          if send(attr) == true
             list.push(attr)
           end
         end
@@ -65,7 +57,7 @@ module SuperAccessors
         @i18n_base_scope = [:activerecord, :options, self.class.name.underscore, store_name]
         list = [];
         attrs.each do |attr|
-          if self.send(attr) == true
+          if send(attr) == true
             list.push(I18n.t("#{attr}", scope: @i18n_base_scope, :default => attr.to_s.humanize))
           end
         end
@@ -77,10 +69,11 @@ module SuperAccessors
       define_method("store_key_type_#{datatype}") do |store_name, attr|
         define_method(attr) do
           value = read_store_attribute(store_name, attr)
-          self.send("any_to_#{datatype}", value)
+          self.class.send("any_to_#{datatype}", value)
         end
         define_method("#{attr}=") do |value|
-          value = self.send("any_to_#{datatype}", value)
+
+          value = self.class.send("any_to_#{datatype}", value)
           write_store_attribute(store_name, attr, value)
         end
       end
