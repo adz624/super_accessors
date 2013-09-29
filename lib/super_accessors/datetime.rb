@@ -19,8 +19,8 @@ module SuperAccessors
         end
 
         define_method("#{attr}_time=") do |time|
-          return unless time.present
-          time = Date.parse(time.to_s)
+          return unless time.present?
+          time = Time.parse(time.to_s)
           self.send("#{attr}=", self.send(attr).change(hour: time.hour, min: time.min))
         end
 
