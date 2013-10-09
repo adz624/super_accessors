@@ -20,4 +20,11 @@ describe "[Datetime Split] test" do
       Time.parse(@user.confirm_datetime_time).should == Time.parse("10:20")
     end
   end
+
+  context "time zero format" do
+    it "should be 01:00" do
+      @user.confirm_datetime_time = '01:00'
+      @user.confirm_datetime_time.should  == '01:00'
+    end
+  end
 end
