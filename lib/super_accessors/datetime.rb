@@ -29,7 +29,7 @@ module SuperAccessors
         end
 
         define_method("#{attr}_time") do
-          [self.send(attr).hour, self.send(attr).min].join(':')
+          [self.send(attr).hour.to_s.rjust(2, '0'), self.send(attr).min.to_s.rjust(2, '0')].join(':')
         end
       end
     end
